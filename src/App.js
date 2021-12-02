@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { useState } from "react";
 import { Navbar, Button, Alert, ButtonGroup } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import GoogleButton from "react-google-button";
@@ -9,6 +9,12 @@ import "prismjs/components/prism-javascript";
 import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
 import Loader from "react-loader-spinner";
 import SplitPane, { Pane } from "react-split-pane";
+
+import "reactjs-popup/dist/index.css";
+import NewWindow from "react-new-window";
+import { Widget } from "react-chat-widget";
+import "react-chat-widget/lib/styles.css";
+import logo from "./logo.svg";
 
 const codeText = `
   #include <iostream>
@@ -37,10 +43,16 @@ const codeText = `
 
 `;
 
+const handleNewUserMessage = (newMessage) => {
+  console.log(`New message incoming! ${newMessage}`);
+  // Now send the message throught the backend API
+};
+
 const CodeComponent = () => {
   const [code, setCode] = useState(codeText);
   const [ac, setAC] = useState(false);
   const [loader, setLoader] = useState(false);
+  const [chatpopup, setChatPopup] = useState(false);
 
   return (
     <div style={{ padding: "10px" }}>
@@ -69,7 +81,13 @@ const CodeComponent = () => {
             </p>
           </div>
           <ButtonGroup style={{ padding: "10px" }}>
-            <Button>Find peer</Button>
+            <Button
+              onClick={() => {
+                setChatPopup(true);
+              }}
+            >
+              Find peer
+            </Button>
             <Button
               onClick={() => {
                 setLoader(true);
@@ -82,6 +100,26 @@ const CodeComponent = () => {
               Run Code
             </Button>
           </ButtonGroup>
+          {chatpopup ? (
+            <NewWindow>
+              <Navbar bg="light" expand="lg" className="justify-content-center">
+                <Navbar.Brand
+                  style={{
+                    fontSize: 35,
+                  }}
+                >
+                  Click on the button to start chatting
+                </Navbar.Brand>
+                <Navbar.Toggle aria-controls="basic-navbar-nav" />
+              </Navbar>
+              <Widget
+                handleNewUserMessage={handleNewUserMessage}
+                profileAvatar={logo}
+                title="You are chatting with Manas Satpute"
+                subtitle="Follow chat guidelines"
+              />
+            </NewWindow>
+          ) : null}
           {loader ? (
             <Loader type="TailSpin" color="black" height={60} width={60} />
           ) : null}
@@ -177,6 +215,7 @@ const App = () => {
                 opacity: 0.2,
               }}
               src="https://images.unsplash.com/photo-1515879218367-8466d910aaa4?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1000&q=80"
+              alt="background"
             />
             <div
               style={{
