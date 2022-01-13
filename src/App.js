@@ -1,19 +1,17 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
 import { Navbar, Button, Alert, ButtonGroup } from "react-bootstrap";
-import "bootstrap/dist/css/bootstrap.min.css";
-import GoogleButton from "react-google-button";
-import Editor from "react-simple-code-editor";
-import { highlight, languages } from "prismjs/components/prism-core";
-import "prismjs/components/prism-clike";
-import "prismjs/components/prism-javascript";
-import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
-import Loader from "react-loader-spinner";
-import SplitPane, { Pane } from "react-split-pane";
-
-import "reactjs-popup/dist/index.css";
-import NewWindow from "react-new-window";
 import { Widget } from "react-chat-widget";
 import "react-chat-widget/lib/styles.css";
+import GoogleButton from "react-google-button";
+import Loader from "react-loader-spinner";
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import NewWindow from "react-new-window";
+import Editor from "react-simple-code-editor";
+import SplitPane, { Pane } from "react-split-pane";
+import "reactjs-popup/dist/index.css";
+import { highlight, languages } from "prismjs/components/prism-core";
+import "prismjs/components/prism-javascript";
 import logo from "./logo.svg";
 
 const codeText = `
@@ -42,10 +40,10 @@ const codeText = `
 
 
 `;
+let peerNames = ["John Doe", "Emilia Wright", "Mark Manning", "Peter Hrer"];
 
 const handleNewUserMessage = (newMessage) => {
   console.log(`New message incoming! ${newMessage}`);
-  // Now send the message throught the backend API
 };
 
 const CodeComponent = () => {
@@ -110,13 +108,14 @@ const CodeComponent = () => {
                 >
                   Click on the button to start chatting
                 </Navbar.Brand>
-                <Navbar.Toggle aria-controls="basic-navbar-nav" />
               </Navbar>
               <Widget
                 handleNewUserMessage={handleNewUserMessage}
                 profileAvatar={logo}
-                title="You are chatting with Manas Satpute"
-                subtitle="Follow chat guidelines"
+                title={`You are chatting with ${
+                  peerNames[Math.floor(Math.random() * peerNames.length)]
+                }`}
+                subtitle="Follow the chat guidelines"
               />
             </NewWindow>
           ) : null}
@@ -124,7 +123,7 @@ const CodeComponent = () => {
             <Loader type="TailSpin" color="black" height={60} width={60} />
           ) : null}
         </Pane>
-        <Pane initialSize="500px">
+        <Pane initialSize="1000px">
           <div
             style={{
               display: "flex",
@@ -245,7 +244,12 @@ const App = () => {
                   }}
                 />
                 {loader ? (
-                  <Loader type="Rings" color="black" height={80} width={80} />
+                  <Loader
+                    type="TailSpin"
+                    color="black"
+                    height={60}
+                    width={60}
+                  />
                 ) : null}
               </div>
             </div>
